@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Akansha's Birthday Surprise</title>
+<title>Akansha's Birthday Love Game</title>
 
 <style>
 body{
@@ -12,6 +12,7 @@ body{
   background: linear-gradient(to right, #ff758c, #ff7eb3);
   overflow:hidden;
   color:white;
+  transition:0.5s;
 }
 
 .card{
@@ -20,7 +21,7 @@ body{
 
 button{
   padding:12px 25px;
-  margin:10px;
+  margin:15px;
   font-size:18px;
   border:none;
   border-radius:12px;
@@ -30,18 +31,23 @@ button{
 
 button:hover{ transform:scale(1.1); }
 
-.yes{ background:green; color:white; }
-.no{ background:red; color:white; position:relative; }
+.yes{ background:#00c853; color:white; }
+.no{ background:#d50000; color:white; position:absolute; }
 
 .hidden{ display:none; }
 
-.cat{ width:180px; }
-
-img.photo{
+img{
   width:200px;
   border-radius:20px;
   margin-top:20px;
   box-shadow:0 0 20px #fff;
+}
+
+#letter{
+  width:85%;
+  margin:auto;
+  font-size:20px;
+  min-height:120px;
 }
 
 .balloon{
@@ -56,11 +62,10 @@ img.photo{
   to{ transform:translateY(-120vh); }
 }
 
-/* Fireworks */
 .firework{
   position:absolute;
-  width:5px;
-  height:5px;
+  width:6px;
+  height:6px;
   background:white;
   border-radius:50%;
   animation:explode 1s ease-out forwards;
@@ -71,80 +76,111 @@ img.photo{
   to{ transform:scale(20); opacity:0; }
 }
 
-#letter{
-  width:80%;
-  margin:auto;
-  font-size:20px;
-  min-height:120px;
+.heart{
+  position:absolute;
+  font-size:25px;
+  animation:float 6s linear infinite;
 }
 </style>
 </head>
 
 <body>
 
-<audio autoplay loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
-
-<!-- Question -->
-<div class="card" id="q1">
-  <h2>🐱 Akansha, do you love surprises?</h2>
-  <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" class="cat"><br>
-  <button class="yes" onclick="showFinal()">YES 💚</button>
+<div class="card" id="game">
+  <h2 id="question"></h2>
+  <img id="cat" src="">
+  <br>
+  <button class="yes" onclick="nextQuestion()">YES 💚</button>
   <button class="no" onmouseover="moveButton(this)">NO ❌</button>
 </div>
 
-<!-- Final -->
 <div class="card hidden" id="final">
   <h1>🎂 Happy Birthday Akansha 🎂</h1>
-
-  <img src="akansha.jpg" class="photo">
-
   <div id="letter"></div>
-
 </div>
 
 <script>
 
-const message = `Akansha,
+const questions = [
+"Akansha… do you love surprises? 😼",
+"Promise you won’t press NO? 👉👈",
+"Are you smiling right now? 😆",
+"Do you think someone special made this? 😏",
+"Do you like cute cats more than me? 😳",
+"If I give you chocolate… will you say YES? 🍫",
+"Are you ready for something magical? ✨",
+"Do you know how beautiful your smile is? 😍",
+"Will you always stay happy with me around? 🥰",
+"Do you love me even thissss much? 🤏🥺"
+];
 
-On your special day, I just want to tell you how much you mean to me.
-You are my happiness, my peace, and my biggest blessing.
-Your smile lights up my world.
-I am so lucky to have you in my life.
+const gifs = [
+"https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+"https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif",
+"https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif",
+"https://media.giphy.com/media/13borq7Zo2kulO/giphy.gif",
+"https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif",
+"https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif",
+"https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif",
+"https://media.giphy.com/media/10dU7AN7xsi1I4/giphy.gif",
+"https://media.giphy.com/media/12PA1eI8FBqEBa/giphy.gif",
+"https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif"
+];
 
-May your birthday be filled with love, laughter, and endless joy.
-I promise to always stand beside you.
+let current = 0;
 
-I Love You So Much ❤️`;
+function loadQuestion(){
+  document.getElementById("question").innerText = questions[current];
+  document.getElementById("cat").src = gifs[current];
+}
 
-function showFinal(){
-  document.getElementById("q1").classList.add("hidden");
-  document.getElementById("final").classList.remove("hidden");
-  typeWriter();
-  createBalloons();
-  setInterval(createFirework, 500);
+function nextQuestion(){
+  current++;
+  if(current < questions.length){
+    loadQuestion();
+  } else {
+    showFinal();
+  }
 }
 
 function moveButton(btn){
-  btn.style.position="absolute";
   btn.style.left=Math.random()*80+"vw";
   btn.style.top=Math.random()*80+"vh";
 }
 
-/* Typewriter Effect */
+function showFinal(){
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("final").classList.remove("hidden");
+  typeWriter();
+  createBalloons();
+  setInterval(createFirework, 500);
+  setInterval(createHearts, 700);
+}
+
+const message = `Akansha,
+
+On your special day, I just want to say…
+You are the cutest, sweetest, most beautiful part of my life.
+
+Your smile makes my world brighter.
+Your happiness means everything to me.
+
+May your birthday be full of love, laughter and magical moments.
+I am so lucky to have you.
+
+Happy Birthday my love ❤️`;
+
 let i=0;
 function typeWriter(){
   if(i < message.length){
     document.getElementById("letter").innerHTML += message.charAt(i);
     i++;
-    setTimeout(typeWriter, 40);
+    setTimeout(typeWriter,40);
   }
 }
 
-/* Balloons */
 function createBalloons(){
-  for(let i=0;i<15;i++){
+  for(let i=0;i<20;i++){
     let balloon=document.createElement("div");
     balloon.className="balloon";
     balloon.innerHTML="🎈";
@@ -154,16 +190,25 @@ function createBalloons(){
   }
 }
 
-/* Fireworks */
 function createFirework(){
   let firework=document.createElement("div");
   firework.className="firework";
   firework.style.left=Math.random()*100+"vw";
   firework.style.top=Math.random()*100+"vh";
   document.body.appendChild(firework);
-
   setTimeout(()=>{ firework.remove(); },1000);
 }
+
+function createHearts(){
+  let heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="💖";
+  heart.style.left=Math.random()*100+"vw";
+  document.body.appendChild(heart);
+  setTimeout(()=>{ heart.remove(); },6000);
+}
+
+loadQuestion();
 
 </script>
 
