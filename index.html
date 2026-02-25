@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Akansha's Birthday Surprise</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  text-align:center;
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  overflow:hidden;
+  color:white;
+}
+
+.card{
+  margin-top:60px;
+}
+
+button{
+  padding:12px 25px;
+  margin:10px;
+  font-size:18px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{ transform:scale(1.1); }
+
+.yes{ background:green; color:white; }
+.no{ background:red; color:white; position:relative; }
+
+.hidden{ display:none; }
+
+.cat{ width:180px; }
+
+img.photo{
+  width:200px;
+  border-radius:20px;
+  margin-top:20px;
+  box-shadow:0 0 20px #fff;
+}
+
+.balloon{
+  position:absolute;
+  bottom:-150px;
+  font-size:40px;
+  animation:float 8s linear infinite;
+}
+
+@keyframes float{
+  from{ transform:translateY(0); }
+  to{ transform:translateY(-120vh); }
+}
+
+/* Fireworks */
+.firework{
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:white;
+  border-radius:50%;
+  animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+  from{ transform:scale(1); opacity:1; }
+  to{ transform:scale(20); opacity:0; }
+}
+
+#letter{
+  width:80%;
+  margin:auto;
+  font-size:20px;
+  min-height:120px;
+}
+</style>
+</head>
+
+<body>
+
+<audio autoplay loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Question -->
+<div class="card" id="q1">
+  <h2>🐱 Akansha, do you love surprises?</h2>
+  <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" class="cat"><br>
+  <button class="yes" onclick="showFinal()">YES 💚</button>
+  <button class="no" onmouseover="moveButton(this)">NO ❌</button>
+</div>
+
+<!-- Final -->
+<div class="card hidden" id="final">
+  <h1>🎂 Happy Birthday Akansha 🎂</h1>
+
+  <img src="akansha.jpg" class="photo">
+
+  <div id="letter"></div>
+
+</div>
+
+<script>
+
+const message = `Akansha,
+
+On your special day, I just want to tell you how much you mean to me.
+You are my happiness, my peace, and my biggest blessing.
+Your smile lights up my world.
+I am so lucky to have you in my life.
+
+May your birthday be filled with love, laughter, and endless joy.
+I promise to always stand beside you.
+
+I Love You So Much ❤️`;
+
+function showFinal(){
+  document.getElementById("q1").classList.add("hidden");
+  document.getElementById("final").classList.remove("hidden");
+  typeWriter();
+  createBalloons();
+  setInterval(createFirework, 500);
+}
+
+function moveButton(btn){
+  btn.style.position="absolute";
+  btn.style.left=Math.random()*80+"vw";
+  btn.style.top=Math.random()*80+"vh";
+}
+
+/* Typewriter Effect */
+let i=0;
+function typeWriter(){
+  if(i < message.length){
+    document.getElementById("letter").innerHTML += message.charAt(i);
+    i++;
+    setTimeout(typeWriter, 40);
+  }
+}
+
+/* Balloons */
+function createBalloons(){
+  for(let i=0;i<15;i++){
+    let balloon=document.createElement("div");
+    balloon.className="balloon";
+    balloon.innerHTML="🎈";
+    balloon.style.left=Math.random()*100+"vw";
+    balloon.style.animationDuration=(5+Math.random()*5)+"s";
+    document.body.appendChild(balloon);
+  }
+}
+
+/* Fireworks */
+function createFirework(){
+  let firework=document.createElement("div");
+  firework.className="firework";
+  firework.style.left=Math.random()*100+"vw";
+  firework.style.top=Math.random()*100+"vh";
+  document.body.appendChild(firework);
+
+  setTimeout(()=>{ firework.remove(); },1000);
+}
+
+</script>
+
+</body>
+</html>
