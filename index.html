@@ -2,189 +2,201 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Happy Birthday Aarushi 💖🎂</title>
+<title>For Aarushi 💖</title>
 
 <style>
 body{
   margin:0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right,#ff758c,#ff7eb3);
-  text-align:center;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:black;
   color:white;
+  font-family: 'Segoe UI', sans-serif;
   overflow:hidden;
+  transition:1s;
 }
 
-h1{ margin-top:20px; }
+.card{
+  background:#fff8dc;
+  color:#333;
+  padding:30px;
+  border-radius:20px;
+  width:90%;
+  max-width:400px;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,0.6);
+  position:relative;
+}
 
 #cat{
-  font-size:100px;
-  transition:0.3s;
+  font-size:60px;
 }
 
-.question{
-  font-size:22px;
-  margin:20px;
-  padding:10px;
+.bubble{
+  font-size:12px;
+  margin-bottom:10px;
+  color:#555;
 }
 
 button{
-  padding:12px 25px;
-  margin:10px;
+  padding:8px 20px;
   border:none;
-  border-radius:25px;
-  font-size:18px;
+  border-radius:20px;
+  margin:5px;
+  font-size:14px;
   cursor:pointer;
 }
 
 #yes{
-  background:white;
-  color:#ff4f81;
-  font-weight:bold;
+  background:#ff4f81;
+  color:white;
 }
 
 #no{
   background:black;
   color:white;
-  position:absolute;
 }
 
-.emoji{
-  position:absolute;
-  font-size:25px;
-  animation:fall 3s linear infinite;
-}
-
-@keyframes fall{
-  0%{top:-50px;}
-  100%{top:100vh;}
+#countdown{
+  font-size:40px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Happy Birthday Aarushi 🎂💖</h1>
-<div id="cat">😾</div>
-<div class="question" id="question">Aarushi, do you love me? 💕</div>
-
-<button id="yes">YES 😍</button>
-<button id="no">NO 😏</button>
-
-<!-- Background Romantic Song -->
-<audio id="bgMusic" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
-
-<!-- Sound Effects -->
-<audio id="yesSound">
-  <source src="https://assets.mixkit.co/sfx/preview/mixkit-bonus-earned-in-video-game-2058.mp3">
-</audio>
-
-<audio id="angrySound">
-  <source src="https://assets.mixkit.co/sfx/preview/mixkit-angry-cartoon-kitty-meow-94.mp3">
-</audio>
-
-<audio id="celebrateSound">
-  <source src="https://assets.mixkit.co/sfx/preview/mixkit-party-horn-1584.mp3">
-</audio>
+<div id="countdown">3</div>
 
 <script>
 
-let musicStarted = false;
-let music = document.getElementById("bgMusic");
-let yesSound = document.getElementById("yesSound");
-let angrySound = document.getElementById("angrySound");
-let celebrateSound = document.getElementById("celebrateSound");
+let count=3;
 
-let questions = [
-"Aarushi, do you love me? 💕",
-"Am I your favourite person? 😘",
-"Will you stay with me forever? 💍",
-"Do I make you smile everyday? 😊",
-"Am I your cute hero? 😎",
-"Do you miss me when I'm not around? 🥺",
-"Will you celebrate every birthday with me? 🎂",
-"Am I your happiness? ☀️",
-"Do you think about me daily? 💭",
-"Am I your safe place? ❤️",
-"Will you hold my hand always? 🤝",
-"Am I lucky to have you? 🍀",
-"Do you like my efforts for you? 💖",
-"Will you travel the world with me? 🌍",
-"Am I your late night partner? 🌙",
-"Will you never leave me? 🥹",
-"Am I your forever person? 💞",
-"Do you love my silly talks? 😜",
-"Am I special to you? ✨",
-"Aarushi, will you always be mine? 💘"
-];
+let countdown=setInterval(()=>{
+count--;
+if(count>0){
+document.getElementById("countdown").innerHTML=count;
+}else{
+clearInterval(countdown);
+startCard();
+}
+},1000);
 
-let index = 0;
-let cat = document.getElementById("cat");
-let question = document.getElementById("question");
-let noBtn = document.getElementById("no");
+function startCard(){
+document.body.innerHTML=`
+<div class="card">
+<div id="cat">😾</div>
+<div class="bubble" id="bubble">Don't press NO 😾</div>
+<div id="question">My Love Moti 💖<br>Do you love me?</div>
+<button id="yes">Yes 😍</button>
+<button id="no">No 🙈</button>
+</div>
+`;
 
-noBtn.style.top = "60%";
-noBtn.style.left = "50%";
-
-noBtn.addEventListener("mouseover", function(){
-  let x = Math.random()*80;
-  let y = Math.random()*80;
-  noBtn.style.left = x+"%";
-  noBtn.style.top = y+"%";
-  cat.innerHTML = "😾";
-  angrySound.play();
-});
-
-document.getElementById("yes").addEventListener("click", function(){
-
-  if(!musicStarted){
-    music.play();
-    musicStarted = true;
-  }
-
-  yesSound.play();
-  createCrackers();
-  createEmojis();
-
-  index++;
-
-  if(index < questions.length){
-    question.innerHTML = questions[index];
-    cat.innerHTML = "😸";
-  }else{
-    document.body.innerHTML = `
-    <h1 style="margin-top:100px;">I LOVE YOU SO MUCH AARUSHI 😭💖</h1>
-    <h2>You are my forever and always 💍😘</h2>
-    <h1>🎆🎆🎆 HAPPY BIRTHDAY 🎂🎉🎆🎆🎆</h1>
-    `;
-    celebrateSound.play();
-    createCrackers();
-    createEmojis();
-  }
-
-});
-
-function createEmojis(){
-  for(let i=0;i<25;i++){
-    let emoji = document.createElement("div");
-    emoji.className="emoji";
-    emoji.innerHTML="💖";
-    emoji.style.left=Math.random()*100+"%";
-    emoji.style.animationDuration=(2+Math.random()*3)+"s";
-    document.body.appendChild(emoji);
-  }
+setup();
 }
 
-function createCrackers(){
-  for(let i=0;i<20;i++){
-    let cracker = document.createElement("div");
-    cracker.className="emoji";
-    cracker.innerHTML="🎆";
-    cracker.style.left=Math.random()*100+"%";
-    cracker.style.animationDuration=(1+Math.random()*2)+"s";
-    document.body.appendChild(cracker);
-  }
+function setup(){
+
+let questions=[
+"Am I your favourite person? 😏",
+"If I steal your fries 🍟 will you still love me?",
+"When you're angry 😾 do you miss me secretly?",
+"Am I your safe place? 🖤",
+"Do you smile seeing my message? 📱💞",
+"Will you stay with Aarushi forever? 💍"
+];
+
+let index=0;
+
+let cat=document.getElementById("cat");
+let bubble=document.getElementById("bubble");
+let question=document.getElementById("question");
+let noBtn=document.getElementById("no");
+
+document.getElementById("yes").onclick=function(){
+
+cat.innerHTML="😽";
+bubble.innerHTML="Good girl 😽";
+
+if(index<questions.length){
+question.innerHTML=questions[index];
+index++;
+document.body.style.background="#"+Math.floor(Math.random()*16777215).toString(16);
+}else{
+proposal();
+}
+};
+
+noBtn.onclick=function(){
+cat.innerHTML="😾";
+bubble.innerHTML="Think again Moti 😼";
+noBtn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+};
+
+}
+
+function proposal(){
+document.body.innerHTML=`
+<div style="text-align:center;">
+<h2>Will you stay with Aarushi forever? 💍</h2>
+<button onclick="loveLetter()">Yes 💖</button>
+</div>
+`;
+}
+
+function loveLetter(){
+document.body.innerHTML=`
+<div id="letter" style="width:90%;max-width:500px;margin:auto;font-size:18px;white-space:pre-line;"></div>
+`;
+
+let text=`Aarushi... 💖
+
+Shayad main perfect nahi hoon,
+Par tum mere liye perfect ho.
+
+Tum meri smile ho,
+Mera sukoon ho,
+Meri har din ki happiness ho.
+
+Jab tum hasti ho na,
+Sach me duniya thodi si aur achi lagne lagti hai.
+
+Main promise karta hoon,
+Har situation me tumhare saath khada rahunga.
+
+You are not just my love,
+You are my forever.
+
+I Love You So Much Aarushi 💞`;
+
+let i=0;
+let speed=40;
+
+function typeWriter(){
+if(i<text.length){
+document.getElementById("letter").innerHTML+=text.charAt(i);
+i++;
+setTimeout(typeWriter,speed);
+}else{
+nightSky();
+}
+}
+typeWriter();
+}
+
+function nightSky(){
+setTimeout(()=>{
+document.body.innerHTML=`
+<div style="text-align:center;">
+<h1>🌙✨</h1>
+<h2>You Are My Calm In Every Chaos</h2>
+<p style="font-size:14px;">Forever Yours 💖</p>
+</div>
+`;
+document.body.style.background="black";
+},4000);
 }
 
 </script>
