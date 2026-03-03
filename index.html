@@ -2,216 +2,192 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Akansha's Birthday Love Game</title>
+<title>Happy Birthday Aarushi 💖🎂</title>
 
 <style>
 body{
   margin:0;
   font-family: Arial, sans-serif;
+  background: linear-gradient(to right,#ff758c,#ff7eb3);
   text-align:center;
-  background: linear-gradient(to right, #ff758c, #ff7eb3);
-  overflow:hidden;
   color:white;
-  transition:0.5s;
+  overflow:hidden;
 }
 
-.card{
-  margin-top:60px;
+h1{ margin-top:20px; }
+
+#cat{
+  font-size:100px;
+  transition:0.3s;
+}
+
+.question{
+  font-size:22px;
+  margin:20px;
+  padding:10px;
 }
 
 button{
   padding:12px 25px;
-  margin:15px;
-  font-size:18px;
+  margin:10px;
   border:none;
-  border-radius:12px;
+  border-radius:25px;
+  font-size:18px;
   cursor:pointer;
-  transition:0.3s;
 }
 
-button:hover{ transform:scale(1.1); }
-
-.yes{ background:#00c853; color:white; }
-.no{ background:#d50000; color:white; position:absolute; }
-
-.hidden{ display:none; }
-
-img{
-  width:200px;
-  border-radius:20px;
-  margin-top:20px;
-  box-shadow:0 0 20px #fff;
-}
-
-#letter{
-  width:85%;
-  margin:auto;
-  font-size:20px;
-  min-height:120px;
-}
-
-.balloon{
-  position:absolute;
-  bottom:-150px;
-  font-size:40px;
-  animation:float 8s linear infinite;
-}
-
-@keyframes float{
-  from{ transform:translateY(0); }
-  to{ transform:translateY(-120vh); }
-}
-
-.firework{
-  position:absolute;
-  width:6px;
-  height:6px;
+#yes{
   background:white;
-  border-radius:50%;
-  animation:explode 1s ease-out forwards;
+  color:#ff4f81;
+  font-weight:bold;
 }
 
-@keyframes explode{
-  from{ transform:scale(1); opacity:1; }
-  to{ transform:scale(20); opacity:0; }
+#no{
+  background:black;
+  color:white;
+  position:absolute;
 }
 
-.heart{
+.emoji{
   position:absolute;
   font-size:25px;
-  animation:float 6s linear infinite;
+  animation:fall 3s linear infinite;
+}
+
+@keyframes fall{
+  0%{top:-50px;}
+  100%{top:100vh;}
 }
 </style>
 </head>
 
 <body>
 
-<div class="card" id="game">
-  <h2 id="question"></h2>
-  <img id="cat" src="">
-  <br>
-  <button class="yes" onclick="nextQuestion()">YES 💚</button>
-  <button class="no" onmouseover="moveButton(this)">NO ❌</button>
-</div>
+<h1>Happy Birthday Aarushi 🎂💖</h1>
+<div id="cat">😾</div>
+<div class="question" id="question">Aarushi, do you love me? 💕</div>
 
-<div class="card hidden" id="final">
-  <h1>🎂 Happy Birthday Akansha 🎂</h1>
-  <div id="letter"></div>
-</div>
+<button id="yes">YES 😍</button>
+<button id="no">NO 😏</button>
+
+<!-- Background Romantic Song -->
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Sound Effects -->
+<audio id="yesSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-bonus-earned-in-video-game-2058.mp3">
+</audio>
+
+<audio id="angrySound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-angry-cartoon-kitty-meow-94.mp3">
+</audio>
+
+<audio id="celebrateSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-party-horn-1584.mp3">
+</audio>
 
 <script>
 
-const questions = [
-"Akansha… do you love surprises? 😼",
-"Promise you won’t press NO? 👉👈",
-"Are you smiling right now? 😆",
-"Do you think someone special made this? 😏",
-"Do you like cute cats more than me? 😳",
-"If I give you chocolate… will you say YES? 🍫",
-"Are you ready for something magical? ✨",
-"Do you know how beautiful your smile is? 😍",
-"Will you always stay happy with me around? 🥰",
-"Do you love me even thissss much? 🤏🥺"
+let musicStarted = false;
+let music = document.getElementById("bgMusic");
+let yesSound = document.getElementById("yesSound");
+let angrySound = document.getElementById("angrySound");
+let celebrateSound = document.getElementById("celebrateSound");
+
+let questions = [
+"Aarushi, do you love me? 💕",
+"Am I your favourite person? 😘",
+"Will you stay with me forever? 💍",
+"Do I make you smile everyday? 😊",
+"Am I your cute hero? 😎",
+"Do you miss me when I'm not around? 🥺",
+"Will you celebrate every birthday with me? 🎂",
+"Am I your happiness? ☀️",
+"Do you think about me daily? 💭",
+"Am I your safe place? ❤️",
+"Will you hold my hand always? 🤝",
+"Am I lucky to have you? 🍀",
+"Do you like my efforts for you? 💖",
+"Will you travel the world with me? 🌍",
+"Am I your late night partner? 🌙",
+"Will you never leave me? 🥹",
+"Am I your forever person? 💞",
+"Do you love my silly talks? 😜",
+"Am I special to you? ✨",
+"Aarushi, will you always be mine? 💘"
 ];
 
-const gifs = [
-"https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
-"https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif",
-"https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif",
-"https://media.giphy.com/media/13borq7Zo2kulO/giphy.gif",
-"https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif",
-"https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif",
-"https://media.giphy.com/media/LmNwrBhejkK9EFP504/giphy.gif",
-"https://media.giphy.com/media/10dU7AN7xsi1I4/giphy.gif",
-"https://media.giphy.com/media/12PA1eI8FBqEBa/giphy.gif",
-"https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif"
-];
+let index = 0;
+let cat = document.getElementById("cat");
+let question = document.getElementById("question");
+let noBtn = document.getElementById("no");
 
-let current = 0;
+noBtn.style.top = "60%";
+noBtn.style.left = "50%";
 
-function loadQuestion(){
-  document.getElementById("question").innerText = questions[current];
-  document.getElementById("cat").src = gifs[current];
-}
+noBtn.addEventListener("mouseover", function(){
+  let x = Math.random()*80;
+  let y = Math.random()*80;
+  noBtn.style.left = x+"%";
+  noBtn.style.top = y+"%";
+  cat.innerHTML = "😾";
+  angrySound.play();
+});
 
-function nextQuestion(){
-  current++;
-  if(current < questions.length){
-    loadQuestion();
-  } else {
-    showFinal();
+document.getElementById("yes").addEventListener("click", function(){
+
+  if(!musicStarted){
+    music.play();
+    musicStarted = true;
+  }
+
+  yesSound.play();
+  createCrackers();
+  createEmojis();
+
+  index++;
+
+  if(index < questions.length){
+    question.innerHTML = questions[index];
+    cat.innerHTML = "😸";
+  }else{
+    document.body.innerHTML = `
+    <h1 style="margin-top:100px;">I LOVE YOU SO MUCH AARUSHI 😭💖</h1>
+    <h2>You are my forever and always 💍😘</h2>
+    <h1>🎆🎆🎆 HAPPY BIRTHDAY 🎂🎉🎆🎆🎆</h1>
+    `;
+    celebrateSound.play();
+    createCrackers();
+    createEmojis();
+  }
+
+});
+
+function createEmojis(){
+  for(let i=0;i<25;i++){
+    let emoji = document.createElement("div");
+    emoji.className="emoji";
+    emoji.innerHTML="💖";
+    emoji.style.left=Math.random()*100+"%";
+    emoji.style.animationDuration=(2+Math.random()*3)+"s";
+    document.body.appendChild(emoji);
   }
 }
 
-function moveButton(btn){
-  btn.style.left=Math.random()*80+"vw";
-  btn.style.top=Math.random()*80+"vh";
-}
-
-function showFinal(){
-  document.getElementById("game").classList.add("hidden");
-  document.getElementById("final").classList.remove("hidden");
-  typeWriter();
-  createBalloons();
-  setInterval(createFirework, 500);
-  setInterval(createHearts, 700);
-}
-
-const message = `Akansha,
-
-On your special day, I just want to say…
-You are the cutest, sweetest, most beautiful part of my life.
-
-Your smile makes my world brighter.
-Your happiness means everything to me.
-
-May your birthday be full of love, laughter and magical moments.
-I am so lucky to have you.
-
-Happy Birthday my love ❤️`;
-
-let i=0;
-function typeWriter(){
-  if(i < message.length){
-    document.getElementById("letter").innerHTML += message.charAt(i);
-    i++;
-    setTimeout(typeWriter,40);
-  }
-}
-
-function createBalloons(){
+function createCrackers(){
   for(let i=0;i<20;i++){
-    let balloon=document.createElement("div");
-    balloon.className="balloon";
-    balloon.innerHTML="🎈";
-    balloon.style.left=Math.random()*100+"vw";
-    balloon.style.animationDuration=(5+Math.random()*5)+"s";
-    document.body.appendChild(balloon);
+    let cracker = document.createElement("div");
+    cracker.className="emoji";
+    cracker.innerHTML="🎆";
+    cracker.style.left=Math.random()*100+"%";
+    cracker.style.animationDuration=(1+Math.random()*2)+"s";
+    document.body.appendChild(cracker);
   }
 }
-
-function createFirework(){
-  let firework=document.createElement("div");
-  firework.className="firework";
-  firework.style.left=Math.random()*100+"vw";
-  firework.style.top=Math.random()*100+"vh";
-  document.body.appendChild(firework);
-  setTimeout(()=>{ firework.remove(); },1000);
-}
-
-function createHearts(){
-  let heart=document.createElement("div");
-  heart.className="heart";
-  heart.innerHTML="💖";
-  heart.style.left=Math.random()*100+"vw";
-  document.body.appendChild(heart);
-  setTimeout(()=>{ heart.remove(); },6000);
-}
-
-loadQuestion();
 
 </script>
 
 </body>
 </html>
- 
